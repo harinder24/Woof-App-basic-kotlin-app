@@ -15,6 +15,7 @@
  */
 package com.example.woof
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -22,17 +23,18 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 
 import androidx.compose.material.Text
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -40,8 +42,11 @@ import androidx.compose.ui.layout.ContentScale
 
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.woof.data.Dog
 import com.example.woof.data.dogs
 
@@ -61,18 +66,22 @@ class MainActivity : ComponentActivity() {
 /**
  * Composable that displays an app bar and a list of dogs.
  */
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun WoofApp() {
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .fillMaxHeight()
-        .background(color = MaterialTheme.colors.background)){
-    LazyColumn {
-        items(dogs) {
-            DogItem(dog = it)
+    Scaffold(topBar = { WoofTopAppBar() } ) {
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+            .background(color = MaterialTheme.colors.background)){
+            LazyColumn {
+                items(dogs) {
+                    DogItem(dog = it)
+                }
+            }
         }
     }
-    }
+
 }
 
 /**
@@ -119,6 +128,14 @@ fun DogIcon(@DrawableRes dogIcon: Int, modifier: Modifier = Modifier) {
     )
 }
 
+@Composable
+fun WoofTopAppBar(){
+    Row(Modifier.fillMaxWidth().background(color = MaterialTheme.colors.primary), verticalAlignment = Alignment.CenterVertically) {
+        Image(painter = painterResource(id = R.drawable.ic_woof_logo) , contentDescription = "Woof logo", Modifier.size(64.dp).padding(8.dp))
+Text(text = stringResource(id = R.string.app_name), fontSize = 32.sp, fontWeight = FontWeight.Bold)
+    }
+}
+
 /**
  * Composable that displays a dog's name and age.
  *
@@ -131,7 +148,7 @@ fun DogInformation(@StringRes dogName: Int, dogAge: Int, modifier: Modifier = Mo
     Column {
         Text(
             text = stringResource(dogName),
-            modifier = modifier.padding(top = 8.dp)
+            modifier = modifier.padding(top = 8.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold
 
         )
         Text(
