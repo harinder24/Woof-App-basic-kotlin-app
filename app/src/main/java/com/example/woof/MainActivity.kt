@@ -21,22 +21,26 @@ import androidx.activity.compose.setContent
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.MaterialTheme
+
 import androidx.compose.material.Text
+
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+
+
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.woof.data.Dog
 import com.example.woof.data.dogs
+
 import com.example.woof.ui.theme.WoofTheme
 
 class MainActivity : ComponentActivity() {
@@ -55,10 +59,15 @@ class MainActivity : ComponentActivity() {
  */
 @Composable
 fun WoofApp() {
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .fillMaxHeight()
+        .background(color = MaterialTheme.colors.background)){
     LazyColumn {
         items(dogs) {
             DogItem(dog = it)
         }
+    }
     }
 }
 
@@ -73,7 +82,8 @@ fun DogItem(dog: Dog, modifier: Modifier = Modifier) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(8.dp).background(color = MaterialTheme.colors.surface)
+
     ) {
         DogIcon(dog.imageResourceId)
         DogInformation(dog.name, dog.age)
@@ -114,9 +124,11 @@ fun DogInformation(@StringRes dogName: Int, dogAge: Int, modifier: Modifier = Mo
         Text(
             text = stringResource(dogName),
             modifier = modifier.padding(top = 8.dp)
+                , color = MaterialTheme.colors.onSurface
         )
         Text(
             text = stringResource(R.string.years_old, dogAge)
+            , color = MaterialTheme.colors.onSurface
         )
     }
 }
@@ -128,6 +140,17 @@ fun DogInformation(@StringRes dogName: Int, dogAge: Int, modifier: Modifier = Mo
 @Composable
 fun WoofPreview() {
     WoofTheme(darkTheme = false) {
+        WoofApp()
+    }
+}
+
+/**
+ * Composable that displays what the UI of the app looks like in dark theme in the design tab.
+ */
+@Preview
+@Composable
+fun WoofDarkThemePreview() {
+    WoofTheme(darkTheme = true) {
         WoofApp()
     }
 }
